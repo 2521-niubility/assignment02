@@ -55,10 +55,10 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
             }
         }
 
-        modify_da(da, ci, cj, N);
         float *newdist = malloc(N * sizeof(float));
         modify_newdist(newdist, ci, cj, N, method, dist);
         modify_dist(dist, ci, cj, N, newdist);
+        modify_da(da, ci, cj, N);
     }
     return da[0];
 }
@@ -71,9 +71,9 @@ void freeDendrogram(Dendrogram d) {
     free(d);
 }
 
+// three steps to set the start **dist with a given graph
 static void setDist(Graph g, float **dist) {
     int N = numVerticies(g);
-    /* three steps to set the distance */
 
     // step 1 : set all distances to infinity
     for (int i = 0; i < N; i++) {
@@ -141,16 +141,17 @@ static void modify_newdist(float *newdist, int ci, int cj, int N, int method, fl
     }
 }
 
-// set **dist with a given *newdist, then delete row and line at index ci and cj
+// delete row and column at index ci and cj,
+// and add newdist at the last row and column
 static void modify_dist(float **dist, int ci, int cj, int N, float *newdist) {
-    // delete dist @ line index ci
+    // delete dist @ column index ci
     for (int i = 0; i < N; i++) {
         for (int j = ci; j < N - 1; j++) {
             dist[i][j] = dist[i][j + 1];
         }
     }
 
-    // delete dist @ line index cj
+    // delete dist @ column index cj
     for (int i = 0; i < N; i++) {
         for (int j = cj; j < N - 2; j++) {
             dist[i][j] = dist[i][j + 1];
@@ -171,7 +172,7 @@ static void modify_dist(float **dist, int ci, int cj, int N, float *newdist) {
         }
     }
 
-    // add new distance to the line index (N-2) and row index (N-2)
+    // add new distance to the column index (N-2) and row index (N-2)
     int k = N - 2;
     for (int i = 0; i < N - 1; i++) {
         dist[k][i] = dist[i][k] = newdist[i];

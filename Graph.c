@@ -23,12 +23,12 @@ Graph newGraph(int noNodes) {
 
     /* allocate for EDGEs */
     new->edges = calloc(noNodes, sizeof(int *));
-    if (new->edges == NULL) err(EX_OSERR, "calloc");
+    if (new->edges == NULL) err(EX_OSERR, "calloc error for edges");
 
     /* allocate for each edge and initialise to 0 */
     for (int i = 0; i < noNodes; i++) {
         new->edges[i] = calloc (noNodes, sizeof(int *));
-        if (new->edges[i] == NULL) err(EX_OSERR, "calloc");
+        if (new->edges[i] == NULL) err(EX_OSERR, "calloc error for edge");
         for (int j = 0; j < noNodes; j++)
             new->edges[i][j] = 0;
     }
@@ -53,7 +53,7 @@ void removeEdge(Graph g, Vertex src, Vertex dest) {
 
 bool adjacent(Graph g, Vertex src, Vertex dest) {
     assert(g != NULL);
-    return g->edges[src][dest] != 0;
+    return (g->edges[src][dest] != 0);
 }
 
 AdjList outIncident(Graph g, Vertex v) {
@@ -103,11 +103,20 @@ void showGraph(Graph g) {
         puts ("Graph is empty");
         return;
     }
+
+    /* if not empty */
+    printf("\t");
+    for (int i = 0; i < g->nV; i++) {
+        printf("\033[1;32m%d\t\033[0m", i);
+    }
+    printf("\n");
     for (int i = 0; i < g->nV; i++) {
         for (int j = 0; j < g->nV; j++) {
-            printf ("%d", g->edges[i][j]);
+            if (j == 0) printf("\033[1;32m%d\t\033[0m", i);
+            if (j == i) printf("\033[31mX\t\033[0m");
+            else printf ("%-3d\t", g->edges[i][j]);
         }
-        putchar ('\n');
+        printf("\n");
     }
 }
 

@@ -14,7 +14,7 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
     int N = numVerticies(g);
 
     /* MEMORY ALLOCATE */
-	ShortestPaths *way = malloc(sizeof(ShortestPaths));
+    ShortestPaths *way = malloc(sizeof(ShortestPaths));
     way->noNodes = N;
     way->src = v;
     way->dist = malloc(sizeof(int) * N);
@@ -78,31 +78,32 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
     }
 
     freePQ(vSet);
-	return *way;
+    return *way;
 }
 
 void showShortestPaths(ShortestPaths paths) {
-    printf("Node \033[0;33m%d\033[0m\n", paths.src);
-    printf("  Distance\n");
+    printf("\033[0;33mNode %d\033[0m\n", paths.src);
+    printf("  \033[1;32mDistance\033[0m\n");
     for (int i = 0; i < paths.noNodes; i++) {
-        printf("    %3d : ", i);
+        printf("    %d : ", i);
         if (i == paths.src)
             printf("X\n");
         else
-            printf("%3d\n", paths.dist[i]);
+            printf("%d\n", paths.dist[i]);
     }
 
-    printf("  Preds");
+    printf("  \033[1;32mPreds\033[0m\n");
     for (int i = 0; i < paths.noNodes; i++) {
+        printf("    %d : ", i);
         struct PredNode *curr = paths.pred[i];
-        if (curr == NULL)  {
-            printf("NULL");
-            continue;
-        }
         for (; curr != NULL; curr = curr->next) {
             printf("[%d]->", curr->v);
         }
-        printf("NULL\n");
+        if (curr == NULL)  {
+            printf("NULL\n");
+            continue;
+        }
+        // printf("NULL\n");
     }
 }
 

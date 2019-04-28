@@ -24,11 +24,11 @@ PQ newPQ() {
     new->item[0]->key = new->item[0]->value = -1;
     new->size = 0;
 
-	return new;
+    return new;
 }
 
 int PQEmpty(PQ p) {
-	return (!p->size);
+    return (!p->size);
 }
 
 void addPQ(PQ pq, ItemPQ element) {
@@ -60,7 +60,7 @@ void addPQ(PQ pq, ItemPQ element) {
 }
 
 ItemPQ dequeuePQ(PQ pq) {
-	ItemPQ *throwAway = malloc(sizeof(ItemPQ));
+    ItemPQ *throwAway = malloc(sizeof(ItemPQ));
     assert(throwAway != NULL);
     int minValue = pq->item[0]->value;
     int minAt = 0;
@@ -80,7 +80,7 @@ ItemPQ dequeuePQ(PQ pq) {
     }
     pq->size--;
     free(pq->item[pq->size]);
-	return *throwAway;
+    return *throwAway;
 }
 
 void updatePQ(PQ pq, ItemPQ element) {
